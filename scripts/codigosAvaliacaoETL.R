@@ -24,7 +24,7 @@ covidPEDT<- covidPEDT %>% mutate( morreu = ifelse(is.na(covidPEDT$dt_obito), 0, 
 
 baseNovaConfirmados <-covidPEDT %>% filter(confirmado==1 | morreu==1) %>% group_by(municipio,anoNotificacao,semanaEpidemiologicaNotificacao) %>% summarise(nConfirmados = sum(confirmado))
 
-baseNovaObitos <-covidPEDT %>% filter(morreu==1) %>% group_by(municipio,anoObitos,semanaEpidemiologicaObitos) %>% summarise(nMortos = sum(morreu))
+baseNovaObitos <-covidPEDT %>% filter(morreu==1 & confirmado==1) %>% group_by(municipio,anoObitos,semanaEpidemiologicaObitos) %>% summarise(nMortos = sum(morreu))
 
 baseNova <- left_join(baseNovaConfirmados, baseNovaObitos, by = c('municipio' = 'municipio', 'anoNotificacao'='anoObitos', 'semanaEpidemiologicaNotificacao'='semanaEpidemiologicaObitos'))
 
